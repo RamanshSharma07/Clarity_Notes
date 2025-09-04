@@ -5,11 +5,11 @@ import com.ramanshsharma07.claritynotes.feature_note.data.data_source.NoteDao
 import com.ramanshsharma07.claritynotes.feature_note.data.data_source.NoteDatabase
 import com.ramanshsharma07.claritynotes.feature_note.data.repository.NoteRepositoryImpl
 import com.ramanshsharma07.claritynotes.feature_note.domain.repository.NoteRepository
-import com.ramanshsharma07.claritynotes.feature_note.domain.use_case.AddNoteUseCase
-import com.ramanshsharma07.claritynotes.feature_note.domain.use_case.DeleteNoteUseCase
-import com.ramanshsharma07.claritynotes.feature_note.domain.use_case.GetNoteUseCase
-import com.ramanshsharma07.claritynotes.feature_note.domain.use_case.GetNotesUseCase
-import com.ramanshsharma07.claritynotes.feature_note.domain.use_case.NoteUseCases
+import com.ramanshsharma07.claritynotes.feature_note.domain.use_cases.AddNoteUseCase
+import com.ramanshsharma07.claritynotes.feature_note.domain.use_cases.DeleteNoteUseCase
+import com.ramanshsharma07.claritynotes.feature_note.domain.use_cases.GetNoteUseCase
+import com.ramanshsharma07.claritynotes.feature_note.domain.use_cases.GetNotesUseCase
+import com.ramanshsharma07.claritynotes.feature_note.domain.use_cases.NoteUseCases
 import com.ramanshsharma07.claritynotes.feature_note.presentation.add_edit_note.AddEditNoteViewModel
 import com.ramanshsharma07.claritynotes.feature_note.presentation.notes.NotesViewModel
 import org.koin.android.ext.koin.androidApplication

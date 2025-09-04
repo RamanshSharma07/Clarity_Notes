@@ -1,6 +1,7 @@
 package com.ramanshsharma07.claritynotes.feature_note.presentation.add_edit_note.components
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Text
@@ -30,7 +31,7 @@ fun TranspatentHintTextField(
             onValueChange = onValueChange,
             singleLine = singleLine,
             textStyle = textStyle,
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .onFocusChanged { it ->
                     onFocusChange(it)

@@ -4,7 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ramanshsharma07.claritynotes.feature_note.domain.model.Note
-import com.ramanshsharma07.claritynotes.feature_note.domain.use_case.NoteUseCases
+import com.ramanshsharma07.claritynotes.feature_note.domain.use_cases.NoteUseCases
 import com.ramanshsharma07.claritynotes.feature_note.domain.util.NoteOrder
 import com.ramanshsharma07.claritynotes.feature_note.domain.util.OrderType
 import kotlinx.coroutines.Job

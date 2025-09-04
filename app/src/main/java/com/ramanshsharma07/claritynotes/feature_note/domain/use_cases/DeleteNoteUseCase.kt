@@ -1,12 +1,14 @@
-package com.ramanshsharma07.claritynotes.feature_note.domain.use_case
+package com.ramanshsharma07.claritynotes.feature_note.domain.use_cases
 
 import com.ramanshsharma07.claritynotes.feature_note.domain.model.Note
 import com.ramanshsharma07.claritynotes.feature_note.domain.repository.NoteRepository
 
-class GetNoteUseCase (
+class DeleteNoteUseCase(
     private val repository: NoteRepository
-){
-    suspend operator fun invoke(id: Int): Note? {
-        return repository.getNoteById(id)
+) {
+
+    suspend operator fun invoke(note: Note) {
+        repository.deleteNote(note)
     }
+
 }

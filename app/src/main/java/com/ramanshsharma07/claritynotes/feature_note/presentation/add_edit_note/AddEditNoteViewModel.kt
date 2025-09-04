@@ -1,12 +1,13 @@
 package com.ramanshsharma07.claritynotes.feature_note.presentation.add_edit_note
 
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ramanshsharma07.claritynotes.feature_note.domain.model.Note
-import com.ramanshsharma07.claritynotes.feature_note.domain.use_case.NoteUseCases
+import com.ramanshsharma07.claritynotes.feature_note.domain.use_cases.NoteUseCases
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 
@@ -33,6 +34,13 @@ class AddEditNoteViewModel (
 
     private var currentNoteId: Int? = null
 
+    private var initialTitle: String = ""
+    private var initialContent: String = ""
+    private var initialColor: Int = 0
+
+    private val _hasUnsavedChanges = mutableStateOf(false)
+    val hasUnsavedChanges: State<Boolean> = _hasUnsavedChanges
+
     init {
         savedStateHandle.get<Int>("noteId")?.let { noteId ->
             if(noteId != -1) {
@@ -48,11 +56,23 @@ class AddEditNoteViewModel (
                             isHintVisible = false
                         )
                         noteColorState.value = note.color
+
+                        initialTitle = note.title
+                        initialContent = note.content
+                        initialColor = note.color
                     }
                 }
             }
 
         }
+    }
+
+    private fun checkForUnsavedChanges() {
+        val titleChanged = noteTitleState.value.text != initialTitle
+        val contentChanged = noteContentState.value.text != initialContent
+        val colorChanged = noteColorState.value != initialColor
+
+        _hasUnsavedChanges.value = titleChanged || contentChanged || colorChanged
     }
 
     fun onEvent(event: AddEditNoteEvent) {
@@ -62,6 +82,7 @@ class AddEditNoteViewModel (
                 noteTitleState.value = noteTitleState.value.copy(
                     text = event.value
                 )
+                checkForUnsavedChanges()
             }
 
             is AddEditNoteEvent.ChangeTitleFocus -> {
@@ -75,6 +96,7 @@ class AddEditNoteViewModel (
                 noteContentState.value = noteContentState.value.copy(
                     text = event.value
                 )
+                checkForUnsavedChanges()
             }
 
             is AddEditNoteEvent.ChangeContentFocus -> {
@@ -86,6 +108,7 @@ class AddEditNoteViewModel (
 
             is AddEditNoteEvent.ChangeColor -> {
                 noteColorState.value = event.color
+                checkForUnsavedChanges()
             }
 
             is AddEditNoteEvent.SaveNote -> {

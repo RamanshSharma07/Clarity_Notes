@@ -1,5 +1,6 @@
 package com.ramanshsharma07.claritynotes.feature_note.presentation.add_edit_note.components
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -14,20 +15,29 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
@@ -51,6 +61,10 @@ fun AddEditNoteScreen(
     val titleState = viewModel.noteTitleState.value
     val contentState = viewModel.noteContentState.value
 
+    val hasUnsavedChanges by viewModel.hasUnsavedChanges
+
+    var showDialog by remember { mutableStateOf(false) }
+
     val snackbarHostState = remember { SnackbarHostState() }
 
     val noteBackgroundAnimatable = remember {
@@ -60,6 +74,45 @@ fun AddEditNoteScreen(
     }
 
     val scope = rememberCoroutineScope()
+
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = {
+                showDialog = false
+            },
+            title = {
+                Text(
+                    text = "Unsaved Changes",
+                    color = MaterialTheme.colorScheme.primary
+                )
+            },
+            text = {
+                Text(
+                    text = "Are you sure? The changes won't be saved.",
+                    color = MaterialTheme.colorScheme.primary
+                )
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        showDialog = false
+                        navController.navigateUp() // Navigate back
+                    }
+                ) {
+                    Text("Discard")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDialog = false }) {
+                    Text("Cancel")
+                }
+            }
+        )
+    }
+
+    BackHandler(enabled = hasUnsavedChanges) {
+        showDialog = true
+    }
 
     LaunchedEffect(true) {
         viewModel.eventFlow.collectLatest { event ->
@@ -77,6 +130,7 @@ fun AddEditNoteScreen(
     }
 
     Scaffold (
+        modifier = Modifier.imePadding(),
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
@@ -97,6 +151,7 @@ fun AddEditNoteScreen(
                 .background(noteBackgroundAnimatable.value)
                 .padding(padding)
                 .padding(16.dp)
+//                .imePadding()
         ) {
             Row (
                 modifier = Modifier

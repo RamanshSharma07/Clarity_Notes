@@ -1,4 +1,4 @@
-package com.ramanshsharma07.claritynotes.feature_note.domain.use_case
+package com.ramanshsharma07.claritynotes.feature_note.domain.use_cases
 
 data class NoteUseCases(
     val getNotes: GetNotesUseCase,
